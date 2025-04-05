@@ -2,10 +2,10 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -22,16 +22,17 @@ jobs:
 
       - name: Install dependencies
         run: |
+          rm -f package-lock.json
           npm install
-          npm ci || npm install
 
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
         env:
           CI: false
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          folder: build
+          branch: gh-pages
