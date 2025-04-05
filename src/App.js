@@ -3,16 +3,16 @@ import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore';
 
 // Pages
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Notes from './pages/Notes';
-import Calendar from './pages/Calendar';
-import Money from './pages/Money';
-import Settings from './pages/Settings';
-import NotePage from './pages/NotePage';
-import Todo from './pages/Todo';
-import Habits from './pages/Habits';
+import Login from './pages/Login.js';
+import Register from './pages/Register.js';
+import Dashboard from './pages/Dashboard.js';
+import Notes from './pages/Notes.js';
+import Calendar from './pages/Calendar.js';
+import Money from './pages/Money.js';
+import Settings from './pages/Settings.js';
+import NotePage from './pages/NotePage.js';
+import Todo from './pages/Todo.js';
+import Habits from './pages/Habits.js';
 
 // Components
 import ResponsiveLayout from './components/layout/ResponsiveLayout';
