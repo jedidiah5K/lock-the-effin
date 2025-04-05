@@ -16,13 +16,12 @@ export const useAuthStore = create((set, get) => ({
   error: null,
   initialized: false,
 
-  register: async (email, password, displayName) => {
+  register: async function(email, password, displayName) {
     try {
       set({ loading: true, error: null });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       
-      // Create user profile in Firestore
       const newProfile = {
         uid: user.uid,
         email: user.email,
@@ -39,7 +38,7 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  login: async (email, password) => {
+  login: async function(email, password) {
     try {
       set({ loading: true, error: null });
       await signInWithEmailAndPassword(auth, email, password);
@@ -49,13 +48,12 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  loginWithGoogle: async () => {
+  loginWithGoogle: async function() {
     try {
       set({ loading: true, error: null });
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       
-      // Check if user profile exists, if not create one
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       
       if (!userDoc.exists()) {
@@ -77,7 +75,7 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  logout: async () => {
+  logout: async function() {
     try {
       set({ loading: true, error: null });
       await signOut(auth);
@@ -87,7 +85,7 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  updateProfile: async (data) => {
+  updateProfile: async function(data) {
     try {
       const { user } = get();
       if (!user) throw new Error('No user logged in');
@@ -95,7 +93,6 @@ export const useAuthStore = create((set, get) => ({
       set({ loading: true, error: null });
       await setDoc(doc(db, 'users', user.uid), data, { merge: true });
       
-      // Update local profile state
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
         set({ profile: userDoc.data(), loading: false });
@@ -105,16 +102,17 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  clearError: () => set({ error: null }),
+  clearError: function() {
+    set({ error: null });
+  },
 }));
 
 // Initialize auth state listener
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async function(user) {
   const store = useAuthStore.getState();
   
   if (user) {
     try {
-      // Fetch user profile from Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
         useAuthStore.setState({ 
@@ -124,7 +122,6 @@ onAuthStateChanged(auth, async (user) => {
           initialized: true
         });
       } else {
-        // If profile doesn't exist (rare case), create one
         const newProfile = {
           uid: user.uid,
           email: user.email,

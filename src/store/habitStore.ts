@@ -11,8 +11,8 @@ import {
   where, 
   orderBy 
 } from 'firebase/firestore';
-import { db } from '../services/firebase';
-import { useAuthStore } from './authStore';
+import { db } from '../services/firebase.js';
+import { useAuthStore } from './authStore.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface HabitEntry {
